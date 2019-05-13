@@ -22,6 +22,7 @@ cU{2} =[sin((1:n2)/n2*pi)' sin((1:n2)/n2*pi*2)' sin((1:n2)/n2*pi*3)']/sqrt(100);
 sigma_mag = 0.001; 
 A = double(ttm(tensor(B),{cU{1},cU{2}},[1,2]));
 Ytr = ttm(tensor(B),{cU{1},cU{2},Xtr});
+Ytr = Ytr +  sigma_mag*normrnd(0,1,size(Ytr));
 
 %% Showing the samples
 isample = 3
@@ -88,28 +89,3 @@ title('true 1')
 subplot(2,2,4)
 imagesc(A(:,:,2))
 title('true 2')
-%% Method 3: One step tensor regression
-R = [3,3];
-isoptimize = 0;
-isoptimizesigma = 0;
-isiid = 1;
-theta = 1;
-maxiter = 1000; 
-[ alpha,U,para] = onesteptensoreg( Ytr,Xtr,R,maxiter,isoptimize,isoptimizesigma,isiid,theta)
-
-subplot(2,2,1)
-imagesc(alpha(:,:,1))
-title('estimated 1')
-subplot(2,2,2)
-imagesc(alpha(:,:,2))
-title('estimated 1')
-
-subplot(2,2,3)
-imagesc(A(:,:,1))
-title('true 1')
-
-
-subplot(2,2,4)
-imagesc(A(:,:,2))
-title('true 2')
-
